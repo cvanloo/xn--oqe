@@ -1,4 +1,4 @@
-//go:generate peg -inline -switch grammar.peg
+//go:generate go tool peg -inline -switch grammar.peg
 
 package markup
 
