@@ -12,6 +12,6 @@ func Parse(s string) (metas map[string]string, err error) {
 		return metas, err
 	}
 	p.Execute()
-	p.PrintSyntaxTree()
+	//p.PrintSyntaxTree()
 	return p.Metas, nil
 }
