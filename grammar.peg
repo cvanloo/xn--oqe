@@ -1,0 +1,23 @@
+package markup
+
+type Parser Peg {
+    Metas map[string]string
+    key, val string
+    text strings.Builder
+}
+
+Document <- Metas? END
+Metas <- Meta '\n' Metas?
+Meta <- Key _ '=' _ Val { p.Metas[p.key] = p.val }
+Key <- < [a-zA-Z_] [a-zA-Z_1-6]* > { p.key = text }
+Val
+  <- QuotedString { p.val = p.text.String(); p.text.Reset() }
+  / < [^\n]* > { p.val = text }
+QuotedString <- '"' QuotedStringChar* '"'
+QuotedStringChar
+  <- < [^\\"] > { p.text.WriteString(text) }
+  / '\\\\' { p.text.WriteString("\\") }
+  / '\\"' { p.text.WriteString("\"") }
+_ <- Whitespace*
+Whitespace <- ' ' / '\n' / '\t'
+END <- !.
